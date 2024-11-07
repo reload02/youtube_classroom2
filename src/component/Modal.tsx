@@ -4,6 +4,7 @@ import RecentSubmitText from "./RecentSubmitText";
 import { fetchSearchVideo } from "../api/YoutubeAPI";
 import { processedvideo } from "../type/Type";
 
+import { fetchMok } from "../api/YoutubeAPI";
 interface Props {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,13 +16,13 @@ const Modal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   const [videos, setVideos] = useState<processedvideo[]>([]);
 
   useEffect(() => {
-    console.log(submitText);
     const fetchData = async (submitText: string) => {
       const temp = await fetchSearchVideo(submitText);
       if (temp !== null) setVideos(temp);
       else setVideos([]);
     };
-    fetchData(submitText);
+    //fetchData(submitText);
+    setVideos(fetchMok());
   }, [submitText]);
 
   if (!isModalOpen) return null;
@@ -49,9 +50,6 @@ const Modal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           submitText={submitText}
           setSubmitText={setSubmitText}
         />
-        {videos.map((video, index) => (
-          <div key={index}>{video.title}</div>
-        ))}
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
-const mokdata1 = {
+import { ApiVideos } from "../src/type/Type";
+
+export const mokdata1: ApiVideos = {
   kind: "youtube#searchListResponse",
   etag: "Xtnnyr0buEEqb-lZrG2TwveAqw8",
   nextPageToken: "CAEQAA",
@@ -46,7 +48,7 @@ const mokdata1 = {
   ],
 };
 
-const mokdata2 = {
+export const mokdata2: ApiVideos = {
   kind: "youtube#searchListResponse",
   etag: "JND48iyIbIPTGvbIWOUQUSU-MlM",
   nextPageToken: "CDIQAA",

@@ -1,4 +1,5 @@
 import { ApiVideo, ApiVideos, processedvideo } from "../type/Type.tsx";
+import { mokdata1, mokdata2 } from "../../public/mockData.tsx";
 
 const options = {
   method: "GET",
@@ -44,4 +45,9 @@ const formatVideoDatas = (videoDatas: ApiVideos): processedvideo[] => {
       publishTime: video.snippet.publishTime,
     };
   });
+};
+
+export const fetchMok = () => {
+  console.log("zz");
+  return formatVideoDatas(mokdata2);
 };

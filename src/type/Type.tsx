@@ -21,6 +21,7 @@ export type ApiVideo = {
     channelId: string;
     title: string;
     description: string;
+    publishedAt: string;
     thumbnails: {
       default: {
         url: string;
