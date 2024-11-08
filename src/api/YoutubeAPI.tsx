@@ -1,4 +1,4 @@
-import { ApiVideo, ApiVideos, processedvideo } from "../type/Type.tsx";
+import { ApiVideo, ApiVideos, Processedvideo } from "../type/Type.tsx";
 import { mokdata1, mokdata2 } from "../../public/mockData.tsx";
 
 const options = {
@@ -30,7 +30,7 @@ export async function fetchSearchVideo(query: string) {
   }
 }
 
-const formatVideoDatas = (videoDatas: ApiVideos): processedvideo[] => {
+const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
   return videoDatas.items.map((video: ApiVideo) => {
     return {
       status: "default",

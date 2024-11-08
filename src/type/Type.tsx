@@ -45,7 +45,7 @@ export type ApiVideo = {
   };
 };
 
-export type processedvideo = {
+export type Processedvideo = {
   status: "default" | "saved" | "watched";
   nextageToken: string;
   etag: string;
@@ -57,3 +57,10 @@ export type processedvideo = {
   channelTitle: string;
   publishTime: string;
 };
+
+export type VideoState = "default" | "saved" | "watched";
+
+export type VideoLocation =
+  | "onSearchMoadl"
+  | "onBeforeWatchedBox"
+  | "onAfterWatchedBox";
