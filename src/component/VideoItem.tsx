@@ -1,4 +1,4 @@
-import { Processedvideo, VideoState, VideoLocation } from "../type/Type";
+import { Processedvideo, VideoLocation } from "../type/Type";
 
 interface Props {
   video: Processedvideo;
@@ -10,8 +10,12 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
   if (location === "onSearchMoadl")
     return (
       <div>
-        <div>{video.title}</div>
-        <img src={video.thumbnailUrl} />
+        <img
+          src={video.thumbnailUrl}
+          style={{ width: "250px", height: "200px" }}
+        />
+        <div>{video.title.slice(0, 40)}</div>
+
         {video.status === "default" ? (
           <button>저장하기</button>
         ) : (
@@ -22,8 +26,11 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
   else if (location === "onBeforeWatchedBox")
     return (
       <div>
-        <div>{video.title}</div>
-        <img src={video.thumbnailUrl} />
+        <img
+          src={video.thumbnailUrl}
+          style={{ width: "250px", height: "200px" }}
+        />
+        <div>{video.title.slice(0, 40)}</div>
         <button>시청완료</button>
         <button>지우기</button>
       </div>
@@ -31,8 +38,11 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
   else if (location === "onAfterWatchedBox")
     return (
       <div>
-        <div>{video.title}</div>
-        <img src={video.thumbnailUrl} />
+        <img
+          src={video.thumbnailUrl}
+          style={{ width: "250px", height: "200px" }}
+        />
+        <div>{video.title.slice(0, 40)}</div>
         <button>다시보기</button>
         <button>지우기</button>
       </div>
