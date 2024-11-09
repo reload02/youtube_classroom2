@@ -8,6 +8,7 @@ interface Props {
 }
 
 const VideoList: React.FC<Props> = ({ videos, location }) => {
+  if (videos === null) return <div>데이터가 없음</div>;
   return (
     <div className="VideoList">
       {videos.map((video, index) => (

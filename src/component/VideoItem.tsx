@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Processedvideo, VideoLocation } from "../type/Type";
 
 interface Props {
