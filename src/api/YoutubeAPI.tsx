@@ -53,7 +53,7 @@ export const fetchMok = () => {
   if (previousData === null) return fetchedData;
 
   const savedVideoID = JSON.parse(previousData).map((data: Processedvideo) => {
-    if (data.status === "saved") return data.videoId;
+    if (data.status !== "default") return data.videoId;
   });
   fetchedData.map((data) => {
     if (savedVideoID.includes(data.videoId)) {

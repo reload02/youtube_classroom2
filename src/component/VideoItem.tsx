@@ -10,7 +10,6 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
   const [videoStatus, setVideoStatus] = useState(video.status);
 
   const saveVideo = () => {
-    console.log("저장함");
     video.status = "saved";
     setVideoStatus("saved");
     const latest = localStorage.getItem("SAVED_VIDEO");
@@ -19,7 +18,31 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
     else {
       localStorage.setItem(
         "SAVED_VIDEO",
-        JSON.stringify([...JSON.parse(latest), video])
+        JSON.stringify([
+          ...JSON.parse(latest).filter(
+            (videoData: Processedvideo) => videoData.videoId !== video.videoId
+          ),
+          video,
+        ])
+      );
+    }
+  };
+
+  const watchVideo = () => {
+    video.status = "watched";
+    setVideoStatus("watched");
+    const latest = localStorage.getItem("SAVED_VIDEO");
+    if (latest === null)
+      localStorage.setItem("SAVED_VIDEO", JSON.stringify([video]));
+    else {
+      localStorage.setItem(
+        "SAVED_VIDEO",
+        JSON.stringify([
+          ...JSON.parse(latest).filter(
+            (videoData: Processedvideo) => videoData.videoId !== video.videoId
+          ),
+          video,
+        ])
       );
     }
   };
@@ -47,7 +70,7 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
           style={{ width: "250px", height: "200px" }}
         />
         <div>{video.title.slice(0, 40)}</div>
-        <button>시청완료</button>
+        <button onClick={watchVideo}>시청완료</button>
         <button>지우기</button>
       </div>
     );
@@ -59,7 +82,7 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
           style={{ width: "250px", height: "200px" }}
         />
         <div>{video.title.slice(0, 40)}</div>
-        <button>다시보기</button>
+        <button onClick={saveVideo}>다시보기</button>
         <button>지우기</button>
       </div>
     );

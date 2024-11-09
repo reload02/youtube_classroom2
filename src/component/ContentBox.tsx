@@ -11,7 +11,7 @@ const ContentBox: React.FC = () => {
 
   useEffect(() => {
     setViseos(JSON.parse(localStorage.getItem("SAVED_VIDEO") || "[]"));
-  }, [studyMode, isModalOpen]);
+  }, [studyMode, isModalOpen, videos]);
 
   return (
     <>
@@ -36,14 +36,14 @@ const ContentBox: React.FC = () => {
             videos={videos.filter(
               (video: Processedvideo) => video.status === "saved"
             )}
-            location="onBeforeWatchedBox"
+            location={studyMode}
           />
         ) : (
           <VideoList
             videos={videos.filter(
               (video: Processedvideo) => video.status === "watched"
             )}
-            location="onBeforeWatchedBox"
+            location={studyMode}
           />
         )}
       </section>
