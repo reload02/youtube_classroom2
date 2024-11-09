@@ -48,6 +48,19 @@ const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
 };
 
 export const fetchMok = () => {
-  console.log("zz");
-  return formatVideoDatas(mokdata2);
+  const fetchedData = formatVideoDatas(mokdata2);
+  const previousData = localStorage.getItem("SAVED_VIDEO");
+  if (previousData === null) return fetchedData;
+
+  const savedVideoID = JSON.parse(previousData).map((data: Processedvideo) => {
+    if (data.status === "saved") return data.videoId;
+  });
+  fetchedData.map((data) => {
+    if (savedVideoID.includes(data.videoId)) {
+      data.status = "saved";
+      return data;
+    }
+    return data;
+  });
+  return fetchedData;
 };
