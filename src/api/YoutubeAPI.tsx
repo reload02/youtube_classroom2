@@ -1,5 +1,5 @@
 import { ApiVideo, ApiVideos, Processedvideo } from "../type/Type.tsx";
-import { mokdata1, mokdata2 } from "../../public/mockData.tsx";
+//import { mokdata1, mokdata2 } from "../../public/mockData.tsx";
 
 const options = {
   method: "GET",
@@ -31,36 +31,43 @@ export async function fetchSearchVideo(query: string) {
 }
 
 const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
-  return videoDatas.items.map((video: ApiVideo) => {
-    return {
-      status: "default",
-      nextageToken: videoDatas.nextPageToken,
-      etag: video.etag,
-      videoId: video.id.videoId,
-      channelId: video.snippet.channelId,
-      title: video.snippet.title,
-      description: video.snippet.description,
-      thumbnailUrl: video.snippet.thumbnails.high.url,
-      channelTitle: video.snippet.channelTitle,
-      publishTime: video.snippet.publishTime,
-    };
-  });
-};
+  const formatDatas: Processedvideo[] = videoDatas.items.map(
+    (video: ApiVideo) => {
+      return {
+        status: "default",
+        nextageToken: videoDatas.nextPageToken,
+        etag: video.etag,
+        videoId: video.id.videoId,
+        channelId: video.snippet.channelId,
+        title: video.snippet.title,
+        description: video.snippet.description,
+        thumbnailUrl: video.snippet.thumbnails.high.url,
+        channelTitle: video.snippet.channelTitle,
+        publishTime: video.snippet.publishTime,
+      };
+    }
+  );
 
-export const fetchMok = () => {
-  const fetchedData = formatVideoDatas(mokdata2);
-  const previousData = localStorage.getItem("SAVED_VIDEO");
-  if (previousData === null) return fetchedData;
+  const savedVideoData = localStorage.getItem("SAVED_VIDEO");
+  if (savedVideoData === null) return formatDatas;
 
-  const savedVideoID = JSON.parse(previousData).map((data: Processedvideo) => {
-    if (data.status !== "default") return data.videoId;
-  });
-  fetchedData.map((data) => {
+  const savedVideoID = JSON.parse(savedVideoData).map(
+    (data: Processedvideo) => {
+      if (data.status !== "default") return data.videoId;
+    }
+  );
+  formatDatas.map((data) => {
     if (savedVideoID.includes(data.videoId)) {
       data.status = "saved";
       return data;
     }
     return data;
   });
-  return fetchedData;
+  return formatDatas;
 };
+
+// export const fetchMok = () => {
+//   const fetchedData = formatVideoDatas(mokdata2);
+
+//   return fetchedData;
+// };

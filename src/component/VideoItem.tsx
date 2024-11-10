@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MutableRefObject } from "react";
+import React, { useEffect, useState } from "react";
 import { Processedvideo, VideoLocation, VideoState } from "../type/Type";
 
 interface Props {
@@ -13,7 +13,8 @@ const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
 
   useEffect(() => {
     setVisible(true);
-  }, [location]);
+    setVideoStatus(video.status);
+  }, [location, video]);
 
   if (!visible) return null;
 

@@ -5,26 +5,27 @@ import { fetchSearchVideo } from "../api/YoutubeAPI";
 import { Processedvideo } from "../type/Type";
 import VideoList from "./VideoList";
 
-import { fetchMok } from "../api/YoutubeAPI";
+//import { fetchMok } from "../api/YoutubeAPI";
 
 interface Props {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
+const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [submitText, setSubmitText] = useState<string>("");
   const [videos, setVideos] = useState<Processedvideo[]>([]);
 
   useEffect(() => {
     const fetchData = async (submitText: string) => {
-      const temp = await fetchSearchVideo(submitText);
-      if (temp !== null) setVideos(temp);
+      const fetchedData = await fetchSearchVideo(submitText);
+      if (fetchedData !== null) setVideos(fetchedData);
       else setVideos([]);
     };
-    //fetchData(submitText);
-    setVideos(fetchMok());
+    fetchData(submitText);
+    //setVideos(fetchMok());
+    setSearchText(submitText);
   }, [submitText]);
 
   if (!isModalOpen) return null;
@@ -60,4 +61,4 @@ const Modal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   );
 };
 
-export default Modal;
+export default SearchModal;

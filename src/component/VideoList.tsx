@@ -2,7 +2,7 @@ import { Processedvideo } from "../type/Type";
 import VideoItem from "./VideoItem";
 import { VideoLocation } from "../type/Type";
 import "./VideoList.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 interface Props {
   videos: Processedvideo[];
   location: VideoLocation;

@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useRef, useState } from "react";
-import Modal from "./Modal";
+import { useEffect, useState } from "react";
+import SearchModal from "./SearchModal";
 import { Processedvideo, VideoLocation } from "../type/Type";
 import VideoList from "./VideoList";
 
@@ -10,8 +10,8 @@ const ContentBox: React.FC = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const previousVideos = localStorage.getItem("SAVED_VIDEO");
-    if (previousVideos !== null) setVideos(JSON.parse(previousVideos));
+    const savedVideoData = localStorage.getItem("SAVED_VIDEO");
+    if (savedVideoData !== null) setVideos(JSON.parse(savedVideoData));
     console.log(currentViewComponent);
   }, [currentViewComponent, isModalOpen]);
 
@@ -51,7 +51,7 @@ const ContentBox: React.FC = () => {
           />
         )}
       </section>
-      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <SearchModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
   );
 };
