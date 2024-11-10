@@ -1,24 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import Modal from "./Modal";
 import { Processedvideo, VideoLocation } from "../type/Type";
 import VideoList from "./VideoList";
 
 const ContentBox: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [studyMode, setStudyMode] =
+  const [currentViewComponent, setCurrentViewComponent] =
     useState<VideoLocation>("onBeforeWatchedBox");
-  const [videos, setViseos] = useState([]);
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    setViseos(JSON.parse(localStorage.getItem("SAVED_VIDEO") || "[]"));
-  }, [studyMode, isModalOpen, videos]);
+    const previousVideos = localStorage.getItem("SAVED_VIDEO");
+    if (previousVideos !== null) setVideos(JSON.parse(previousVideos));
+    console.log(currentViewComponent);
+  }, [currentViewComponent, isModalOpen]);
 
   return (
     <>
-      <button onClick={() => setStudyMode("onBeforeWatchedBox")}>학습전</button>
+      <button onClick={() => setCurrentViewComponent("onBeforeWatchedBox")}>
+        학습전
+      </button>
       <button
         onClick={() => {
-          setStudyMode("onAfterWatchedBox");
+          setCurrentViewComponent("onAfterWatchedBox");
         }}
       >
         학습후
@@ -31,19 +35,19 @@ const ContentBox: React.FC = () => {
         검색창
       </button>
       <section style={{ border: "1px solid black" }}>
-        {studyMode === "onBeforeWatchedBox" ? (
+        {currentViewComponent === "onBeforeWatchedBox" ? (
           <VideoList
             videos={videos.filter(
               (video: Processedvideo) => video.status === "saved"
             )}
-            location={studyMode}
+            location={currentViewComponent}
           />
         ) : (
           <VideoList
             videos={videos.filter(
               (video: Processedvideo) => video.status === "watched"
             )}
-            location={studyMode}
+            location={currentViewComponent}
           />
         )}
       </section>

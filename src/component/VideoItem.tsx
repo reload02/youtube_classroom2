@@ -1,13 +1,42 @@
-import { useState } from "react";
-import { Processedvideo, VideoLocation } from "../type/Type";
+import React, { useEffect, useState, MutableRefObject } from "react";
+import { Processedvideo, VideoLocation, VideoState } from "../type/Type";
 
 interface Props {
   video: Processedvideo;
   location: VideoLocation;
+  setVideosCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const VideoItem: React.FC<Props> = ({ video, location }) => {
+const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
   const [videoStatus, setVideoStatus] = useState(video.status);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    setVisible(true);
+  }, [location]);
+
+  if (!visible) return null;
+
+  const handleVideo = (status: VideoState) => {
+    video.status = status;
+    setVideoStatus(status);
+    const latest = localStorage.getItem("SAVED_VIDEO");
+    if (latest === null)
+      localStorage.setItem("SAVED_VIDEO", JSON.stringify([video]));
+    else {
+      localStorage.setItem(
+        "SAVED_VIDEO",
+        JSON.stringify([
+          ...JSON.parse(latest).filter(
+            (videoData: Processedvideo) => videoData.videoId !== video.videoId
+          ),
+          video,
+        ])
+      );
+      setVisible(false);
+      setVideosCount((prev) => prev - 1);
+    }
+  };
 
   const saveVideo = () => {
     video.status = "saved";
@@ -28,12 +57,9 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
     }
   };
 
-  const watchVideo = () => {
-    video.status = "watched";
-    setVideoStatus("watched");
+  const deleteVideo = () => {
     const latest = localStorage.getItem("SAVED_VIDEO");
-    if (latest === null)
-      localStorage.setItem("SAVED_VIDEO", JSON.stringify([video]));
+    if (latest === null) localStorage.setItem("SAVED_VIDEO", "[]");
     else {
       localStorage.setItem(
         "SAVED_VIDEO",
@@ -41,9 +67,10 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
           ...JSON.parse(latest).filter(
             (videoData: Processedvideo) => videoData.videoId !== video.videoId
           ),
-          video,
         ])
       );
+      setVisible(false);
+      setVideosCount((prev) => prev - 1);
     }
   };
 
@@ -70,8 +97,14 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
           style={{ width: "250px", height: "200px" }}
         />
         <div>{video.title.slice(0, 40)}</div>
-        <button onClick={watchVideo}>시청완료</button>
-        <button>지우기</button>
+        <button
+          onClick={() => {
+            handleVideo("watched");
+          }}
+        >
+          시청완료
+        </button>
+        <button onClick={deleteVideo}>지우기</button>
       </div>
     );
   else if (location === "onAfterWatchedBox")
@@ -82,8 +115,14 @@ const VideoItem: React.FC<Props> = ({ video, location }) => {
           style={{ width: "250px", height: "200px" }}
         />
         <div>{video.title.slice(0, 40)}</div>
-        <button onClick={saveVideo}>다시보기</button>
-        <button>지우기</button>
+        <button
+          onClick={() => {
+            handleVideo("saved");
+          }}
+        >
+          다시보기
+        </button>
+        <button onClick={deleteVideo}>지우기</button>
       </div>
     );
 };
