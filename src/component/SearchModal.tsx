@@ -23,10 +23,12 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
       if (fetchedData !== null) setVideos(fetchedData);
       else setVideos([]);
     };
-    fetchData(submitText);
-    //setVideos(fetchMok());
-    setSearchText(submitText);
-  }, [submitText]);
+    if (submitText !== "" && isModalOpen) {
+      fetchData(submitText);
+      //setVideos(fetchMok());
+      setSearchText(submitText);
+    }
+  }, [submitText, isModalOpen]);
 
   if (!isModalOpen) return null;
   return (

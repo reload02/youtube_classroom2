@@ -6,7 +6,9 @@ interface Props {
 }
 
 const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
-  const [recentTexts, setRecentTexts] = useState<string[]>([]);
+  const [recentTexts, setRecentTexts] = useState<string[]>(
+    JSON.parse(localStorage.getItem("RECENT_TEXTS") || "[]")
+  );
 
   useEffect(() => {
     const editRecentSubmitText = () => {
@@ -19,6 +21,11 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
     };
     editRecentSubmitText();
   }, [submitText]);
+  useEffect(() => {
+    localStorage.setItem("RECENT_TEXTS", JSON.stringify(recentTexts));
+  }, [recentTexts]);
+
+  if (recentTexts.length === 0) return <div>최근 검색어가 없습니다,</div>;
 
   return (
     <div>
