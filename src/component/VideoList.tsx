@@ -15,7 +15,13 @@ const VideoList: React.FC<Props> = ({ videos, location }) => {
     setVideosCount(videos.length);
   }, [videos]);
 
-  if (videosCount === 0) return <div>데이터가 없음</div>;
+  if (videosCount === 0)
+    return (
+      <img
+        style={{ height: "500px", width: "900px" }}
+        src="https://www.geumsan.go.kr/lifelongedu/img/sub01/nodata.jpg"
+      ></img>
+    );
   return (
     <div className="VideoList">
       {videos.map((video, index) => (

@@ -36,6 +36,7 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
             onClick={() => {
               setSubmitText(text);
             }}
+            style={{ cursor: "pointer", fontSize: "10px", color: "gray" }}
           >
             {text + " "}
           </span>

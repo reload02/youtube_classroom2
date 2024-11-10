@@ -31,6 +31,7 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   }, [submitText, isModalOpen]);
 
   if (!isModalOpen) return null;
+
   return (
     <div className="modal" onClick={() => setIsModalOpen(false)}>
       <div className="modalContent" onClick={(e) => e.stopPropagation()}>

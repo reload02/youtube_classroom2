@@ -22,8 +22,8 @@ export async function fetchSearchVideo(query: string) {
       throw new Error(`HTTP 에러 status: ${response.status}`);
     }
     const data = await response.json();
-    const pdata = formatVideoDatas(data);
-    return pdata;
+    const formattedData = formatVideoDatas(data);
+    return formattedData;
   } catch (error) {
     console.error("Fetch 에러:", error);
     return null;

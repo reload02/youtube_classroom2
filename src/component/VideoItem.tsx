@@ -6,7 +6,9 @@ interface Props {
   location: VideoLocation;
   setVideosCount: React.Dispatch<React.SetStateAction<number>>;
 }
-
+interface Props2 {
+  video: Processedvideo;
+}
 const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
   const [videoStatus, setVideoStatus] = useState(video.status);
   const [visible, setVisible] = useState(true);
@@ -78,11 +80,7 @@ const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
   if (location === "onSearchMoadl")
     return (
       <div>
-        <img
-          src={video.thumbnailUrl}
-          style={{ width: "250px", height: "200px" }}
-        />
-        <div>{video.title.slice(0, 40)}</div>
+        <VideoPoster video={video} />
         {videoStatus === "default" ? (
           <button onClick={saveVideo}>저장하기</button>
         ) : (
@@ -93,39 +91,47 @@ const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
   else if (location === "onBeforeWatchedBox")
     return (
       <div>
-        <img
-          src={video.thumbnailUrl}
-          style={{ width: "250px", height: "200px" }}
-        />
-        <div>{video.title.slice(0, 40)}</div>
+        <VideoPoster video={video} />
         <button
           onClick={() => {
             handleVideo("watched");
           }}
         >
-          시청완료
+          ✅
         </button>
-        <button onClick={deleteVideo}>지우기</button>
+        <button onClick={deleteVideo}>🗑️</button>
       </div>
     );
   else if (location === "onAfterWatchedBox")
     return (
       <div>
-        <img
-          src={video.thumbnailUrl}
-          style={{ width: "250px", height: "200px" }}
-        />
-        <div>{video.title.slice(0, 40)}</div>
+        <VideoPoster video={video} />
         <button
           onClick={() => {
             handleVideo("saved");
           }}
         >
-          다시보기
+          ↩️
         </button>
-        <button onClick={deleteVideo}>지우기</button>
+        <button onClick={deleteVideo}>🗑️</button>
       </div>
     );
+};
+
+const VideoPoster: React.FC<Props2> = ({ video }) => {
+  return (
+    <div>
+      <img
+        src={video.thumbnailUrl}
+        style={{ width: "250px", height: "200px", borderRadius: "5px" }}
+      />
+      <div style={{ width: "250px", height: "50px", textAlign: "center" }}>
+        {video.title.length > 40
+          ? video.title.slice(0, 40) + "...."
+          : video.title}
+      </div>
+    </div>
+  );
 };
 
 export default VideoItem;
