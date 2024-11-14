@@ -7,9 +7,7 @@ const options = {
     accept: "application/json",
   },
 };
-
-//const API_KEY = `AIzaSyAF_MIoAJyLJMcy0-v6ki4Oyr3Ao-tF9xA`;// kokomo129
-const API_KEY = "AIzaSyDp8S2de2K1R3c3LLxwetR3ko67yeTF2VQ"; //ehp6821
+const API_KEY = import.meta.env.VITE_API_KEY;
 export async function fetchSearchVideo(query: string) {
   console.log("검색 시도함");
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=15&type=video&key=${API_KEY}`;
