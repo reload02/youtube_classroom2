@@ -30,6 +30,23 @@ export async function fetchSearchVideo(query: string) {
   }
 }
 
+export async function fetchVideo(VideoID: string) {
+  console.log("검색 시도함");
+  const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${VideoID}&key=${API_KEY}`;
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP 에러 status: ${response.status}`);
+    }
+    const data = await response.json();
+    const formattedData = formatVideoDatas(data);
+    return formattedData;
+  } catch (error) {
+    console.error("Fetch 에러:", error);
+    return null;
+  }
+}
+
 const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
   const formatDatas: Processedvideo[] = videoDatas.items.map(
     (video: ApiVideo) => {

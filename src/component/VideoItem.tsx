@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Processedvideo, VideoLocation, VideoState } from "../type/Type";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   video: Processedvideo;
@@ -120,8 +121,14 @@ const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
 };
 
 const VideoPoster: React.FC<Props2> = ({ video }) => {
+  const nav = useNavigate();
   return (
-    <div>
+    <div
+      onClick={() => {
+        nav(`watch/?v=${video.videoId}`);
+      }}
+      style={{ cursor: "pointer" }}
+    >
       <img
         src={video.thumbnailUrl}
         style={{ width: "250px", height: "200px", borderRadius: "5px" }}
