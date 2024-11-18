@@ -58,7 +58,7 @@ const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
         description: video.snippet.description,
         thumbnailUrl: video.snippet.thumbnails.high.url,
         channelTitle: video.snippet.channelTitle,
-        publishTime: video.snippet.publishTime,
+        publishTime: video.snippet.publishedAt || video.snippet.publishTime,
       };
     }
   );

@@ -10,13 +10,15 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
     JSON.parse(localStorage.getItem("RECENT_TEXTS") || "[]")
   );
 
+  console.log(recentTexts);
+
   useEffect(() => {
     const editRecentSubmitText = () => {
       setRecentTexts((prev) => {
         return [
           submitText,
           ...prev.filter((text) => text !== submitText),
-        ].slice(0, 3);
+        ].slice(0, 4);
       });
     };
     editRecentSubmitText();
@@ -25,7 +27,12 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
     localStorage.setItem("RECENT_TEXTS", JSON.stringify(recentTexts));
   }, [recentTexts]);
 
-  if (recentTexts.length === 0) return <div>최근 검색어가 없습니다,</div>;
+  if (recentTexts.length === 1)
+    return (
+      <div style={{ fontSize: "10px", color: "gray" }}>
+        최근 검색어가 없습니다.
+      </div>
+    );
 
   return (
     <div>
