@@ -10,8 +10,6 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
     JSON.parse(localStorage.getItem("RECENT_TEXTS") || "[]")
   );
 
-  console.log(recentTexts);
-
   useEffect(() => {
     const editRecentSubmitText = () => {
       setRecentTexts((prev) => {

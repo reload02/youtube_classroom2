@@ -13,7 +13,6 @@ const ContentBox: React.FC = () => {
   useEffect(() => {
     const savedVideoData = localStorage.getItem("SAVED_VIDEO");
     if (savedVideoData !== null) setVideos(JSON.parse(savedVideoData));
-    console.log(currentViewComponent);
   }, [currentViewComponent, isModalOpen]);
 
   return (
