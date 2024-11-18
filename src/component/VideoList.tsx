@@ -19,7 +19,7 @@ const VideoList: React.FC<Props> = ({ videos, location }) => {
     return (
       <img
         style={{ height: "500px", width: "900px" }}
-        src="https://www.geumsan.go.kr/lifelongedu/img/sub01/nodata.jpg"
+        src="https://www.ecommerce-nation.com/wp-content/uploads/2017/08/How-to-Give-Your-E-Commerce-No-Results-Page-the-Power-to-Sell.png.webp"
       ></img>
     );
   return (
