@@ -1,9 +1,10 @@
 import "./Modal.css";
 import { useEffect, useState } from "react";
 import RecentSubmitText from "./RecentSubmitText";
-import { fetchSearchVideo } from "../api/YoutubeAPI";
-import { Processedvideo } from "../type/Type";
+import { fetchQueryVideo } from "../api/YoutubeAPI";
+import { ApiVideo, Processedvideo } from "../type/Type";
 import VideoList from "./VideoList";
+import { formatVideoDatas } from "../api/YoutubeAPI";
 
 //import { fetchMok } from "../api/YoutubeAPI";
 
@@ -19,9 +20,12 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
 
   useEffect(() => {
     const fetchData = async (submitText: string) => {
-      const fetchedData = await fetchSearchVideo(submitText);
-      if (fetchedData !== null) setVideos(fetchedData);
-      else setVideos([]);
+      const fetchedData = await fetchQueryVideo(submitText);
+
+      if (fetchedData !== null) {
+        const formatDatas = formatVideoDatas(fetchedData);
+        setVideos(formatDatas);
+      } else setVideos([]);
     };
     if (submitText !== "" && isModalOpen) {
       fetchData(submitText);

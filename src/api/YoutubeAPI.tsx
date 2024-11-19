@@ -8,8 +8,7 @@ const options = {
   },
 };
 const API_KEY = import.meta.env.VITE_API_KEY;
-export async function fetchSearchVideo(query: string) {
-  console.log("검색 시도함");
+export async function fetchQueryVideo(query: string) {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=15&type=video&key=${API_KEY}`;
   if (query === "") {
     throw new Error("검색어가 없어요");
@@ -20,8 +19,7 @@ export async function fetchSearchVideo(query: string) {
       throw new Error(`HTTP 에러 status: ${response.status}`);
     }
     const data = await response.json();
-    const formattedData = formatVideoDatas(data);
-    return formattedData;
+    return data;
   } catch (error) {
     console.error("Fetch 에러:", error);
     return null;
@@ -29,7 +27,6 @@ export async function fetchSearchVideo(query: string) {
 }
 
 export async function fetchVideo(VideoID: string) {
-  console.log("검색 시도함");
   const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${VideoID}&key=${API_KEY}`;
   try {
     const response = await fetch(url, options);
@@ -37,15 +34,14 @@ export async function fetchVideo(VideoID: string) {
       throw new Error(`HTTP 에러 status: ${response.status}`);
     }
     const data = await response.json();
-    const formattedData = formatVideoDatas(data);
-    return formattedData;
+    return data;
   } catch (error) {
     console.error("Fetch 에러:", error);
     return null;
   }
 }
 
-const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
+export const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
   const formatDatas: Processedvideo[] = videoDatas.items.map(
     (video: ApiVideo) => {
       return {
@@ -58,7 +54,7 @@ const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
         description: video.snippet.description,
         thumbnailUrl: video.snippet.thumbnails.high.url,
         channelTitle: video.snippet.channelTitle,
-        publishTime: video.snippet.publishedAt || video.snippet.publishTime,
+        publishTime: video.snippet.publishedAt,
       };
     }
   );

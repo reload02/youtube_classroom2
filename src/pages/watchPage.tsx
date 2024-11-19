@@ -3,6 +3,7 @@ import { fetchVideo } from "../api/YoutubeAPI";
 import { useEffect, useState, useRef } from "react";
 import { Processedvideo } from "../type/Type";
 import "./watchPage.css";
+import { formatVideoDatas } from "../api/YoutubeAPI";
 
 const WatchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -26,9 +27,10 @@ const WatchPage: React.FC = () => {
   useEffect(() => {
     const loadVideoData = async () => {
       const fetchVideoInfo = await fetchVideo(VideoID);
-      if (fetchVideoInfo && fetchVideoInfo.length > 0)
-        setVideoData(fetchVideoInfo[0]);
-      else
+      if (fetchVideoInfo) {
+        const formatDatas = formatVideoDatas(fetchVideoInfo)[0];
+        setVideoData(formatDatas);
+      } else
         setVideoData((prev) => {
           return { ...prev, title: "불러올 영상이 없습니다" };
         });
@@ -38,10 +40,9 @@ const WatchPage: React.FC = () => {
 
   useEffect(() => {
     if (inputRef.current) {
-      const currentHeight = Number(inputRef.current.style.height.slice(0, -2));
       const newHeight: number = Math.max(
         inputRef.current.scrollHeight,
-        currentHeight
+        Number(inputRef.current.style.height.slice(0, -2))
       );
       inputRef.current.blur();
 
@@ -83,7 +84,7 @@ const WatchPage: React.FC = () => {
                 setIsOpenSrtail(!isOpenDetail);
               }}
               readOnly
-              value={videoData.description || ""}
+              value={videoData.description}
               style={{
                 borderRadius: "5px",
                 resize: "none",
