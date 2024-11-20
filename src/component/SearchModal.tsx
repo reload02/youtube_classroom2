@@ -2,7 +2,7 @@ import "./Modal.css";
 import { useEffect, useState } from "react";
 import RecentSubmitText from "./RecentSubmitText";
 import { fetchQueryVideo } from "../api/YoutubeAPI";
-import { ApiVideo, Processedvideo } from "../type/Type";
+import { Processedvideo } from "../type/Type";
 import VideoList from "./VideoList";
 import { formatVideoDatas } from "../api/YoutubeAPI";
 
