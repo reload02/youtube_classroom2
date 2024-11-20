@@ -47,6 +47,9 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.code === "Enter") setSubmitText(searchText);
+            }}
           ></input>
           <button
             onClick={() => {

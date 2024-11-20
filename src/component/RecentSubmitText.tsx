@@ -16,16 +16,17 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
         return [
           submitText,
           ...prev.filter((text) => text !== submitText),
-        ].slice(0, 4);
+        ].slice(0, 3);
       });
     };
-    editRecentSubmitText();
+    if (submitText !== "") editRecentSubmitText();
   }, [submitText]);
+
   useEffect(() => {
     localStorage.setItem("RECENT_TEXTS", JSON.stringify(recentTexts));
   }, [recentTexts]);
 
-  if (recentTexts.length === 1)
+  if (recentTexts.length === 0)
     return (
       <div style={{ fontSize: "10px", color: "gray" }}>
         최근 검색어가 없습니다.

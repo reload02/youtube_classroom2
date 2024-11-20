@@ -3,12 +3,13 @@ import VideoItem from "./VideoItem";
 import { VideoLocation } from "../type/Type";
 import "./VideoList.css";
 import { useEffect, useState } from "react";
+
 interface Props {
-  videos: Processedvideo[];
   location: VideoLocation;
+  videos: Processedvideo[];
 }
 
-const VideoList: React.FC<Props> = ({ videos, location }) => {
+const VideoList: React.FC<Props> = ({ location, videos }) => {
   const [videosCount, setVideosCount] = useState(videos.length);
 
   useEffect(() => {
@@ -16,6 +17,7 @@ const VideoList: React.FC<Props> = ({ videos, location }) => {
   }, [videos]);
 
   if (videosCount === 0) return <EmptyVideoList />;
+
   return (
     <div className="VideoList">
       {videos.map((video) => (
