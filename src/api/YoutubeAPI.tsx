@@ -1,4 +1,5 @@
 import { ApiVideo, ApiVideos, Processedvideo } from "../type/Type.tsx";
+import { getLocalStorageData } from "./localstorageAPI.tsx";
 //import { mokdata1, mokdata2 } from "../../public/mockData.tsx";
 
 const options = {
@@ -59,7 +60,7 @@ export const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
     }
   );
 
-  const savedVideoData = localStorage.getItem("SAVED_VIDEO");
+  const savedVideoData = getLocalStorageData("SAVED_VIDEO");
   if (savedVideoData === null) return formatDatas;
 
   const savedVideoID = JSON.parse(savedVideoData).map(

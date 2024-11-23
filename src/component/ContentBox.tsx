@@ -9,6 +9,7 @@ import SearchModal from "./SearchModal";
 import { Processedvideo, VideoLocation } from "../type/Type";
 import VideoList from "./VideoList";
 import "./ContentBox.css";
+import { setLocalStorageData } from "../api/localstorageAPI";
 
 export const setVideoContext = createContext<Dispatch<
   SetStateAction<Processedvideo[]>
@@ -21,7 +22,7 @@ const ContentBox: React.FC = () => {
   const [videos, setVideos] = useState<Processedvideo[]>([]);
 
   useEffect(() => {
-    localStorage.setItem("SAVED_VIDEO", JSON.stringify(videos));
+    setLocalStorageData("SAVED_VIDEO", JSON.stringify(videos));
   }, [videos]);
 
   return (

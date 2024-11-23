@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import {
+  getLocalStorageData,
+  setLocalStorageData,
+} from "../api/localstorageAPI";
 
 interface Props {
   submitText: string;
@@ -7,7 +11,7 @@ interface Props {
 
 const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
   const [recentTexts, setRecentTexts] = useState<string[]>(
-    JSON.parse(localStorage.getItem("RECENT_TEXTS") || "[]")
+    JSON.parse(getLocalStorageData("RECENT_TEXTS"))
   );
 
   useEffect(() => {
@@ -23,7 +27,7 @@ const RecentSubmitText: React.FC<Props> = ({ submitText, setSubmitText }) => {
   }, [submitText]);
 
   useEffect(() => {
-    localStorage.setItem("RECENT_TEXTS", JSON.stringify(recentTexts));
+    setLocalStorageData("RECENT_TEXTS", JSON.stringify(recentTexts));
   }, [recentTexts]);
 
   if (recentTexts.length === 0)
