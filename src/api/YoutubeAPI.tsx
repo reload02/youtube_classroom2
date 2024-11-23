@@ -42,8 +42,8 @@ export async function fetchVideo(VideoID: string) {
   }
 }
 
-export const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
-  const formatDatas: Processedvideo[] = videoDatas.items.map(
+export const processVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
+  const processDatas: Processedvideo[] = videoDatas.items.map(
     (video: ApiVideo) => {
       return {
         status: "default",
@@ -61,21 +61,21 @@ export const formatVideoDatas = (videoDatas: ApiVideos): Processedvideo[] => {
   );
 
   const savedVideoData = getLocalStorageData("SAVED_VIDEO");
-  if (savedVideoData === null) return formatDatas;
+  if (savedVideoData === "[]") return processDatas;
 
   const savedVideoID = JSON.parse(savedVideoData).map(
     (data: Processedvideo) => {
       if (data.status !== "default") return data.videoId;
     }
   );
-  formatDatas.map((data) => {
+  processDatas.map((data) => {
     if (savedVideoID.includes(data.videoId)) {
       data.status = "saved";
       return data;
     }
     return data;
   });
-  return formatDatas;
+  return processDatas;
 };
 
 // export const fetchMok = () => {

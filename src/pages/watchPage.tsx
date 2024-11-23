@@ -3,7 +3,7 @@ import { fetchVideo } from "../api/YoutubeAPI";
 import { useEffect, useState, useRef } from "react";
 import { Processedvideo } from "../type/Type";
 import "./watchPage.css";
-import { formatVideoDatas } from "../api/YoutubeAPI";
+import { processVideoDatas } from "../api/YoutubeAPI";
 
 const WatchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -28,7 +28,7 @@ const WatchPage: React.FC = () => {
     const loadVideoData = async () => {
       const fetchVideoInfo = await fetchVideo(VideoID);
       if (fetchVideoInfo) {
-        const formatDatas = formatVideoDatas(fetchVideoInfo)[0];
+        const formatDatas = processVideoDatas(fetchVideoInfo)[0];
         setVideoData(formatDatas);
       } else
         setVideoData((prev) => {

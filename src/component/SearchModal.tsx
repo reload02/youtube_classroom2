@@ -4,7 +4,7 @@ import RecentSubmitText from "./RecentSubmitText";
 import { fetchQueryVideo } from "../api/YoutubeAPI";
 import { Processedvideo } from "../type/Type";
 import VideoList from "./VideoList";
-import { formatVideoDatas } from "../api/YoutubeAPI";
+import { processVideoDatas } from "../api/YoutubeAPI";
 
 //import { fetchMok } from "../api/YoutubeAPI";
 
@@ -22,7 +22,7 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
     const fetchData = async (submitText: string) => {
       const fetchedData = await fetchQueryVideo(submitText);
       if (fetchedData !== null) {
-        const formatDatas = formatVideoDatas(fetchedData);
+        const formatDatas = processVideoDatas(fetchedData);
         setVideos(formatDatas);
       } else setVideos([]);
     };
