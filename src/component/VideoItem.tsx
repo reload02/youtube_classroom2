@@ -1,82 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Processedvideo, VideoLocation, VideoState } from "../type/Type";
 import { useNavigate } from "react-router-dom";
+import { setVideoContext } from "./ContentBox";
 
 interface Props {
   video: Processedvideo;
   location: VideoLocation;
-  setVideosCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface Props2 {
   video: Processedvideo;
 }
-const VideoItem: React.FC<Props> = ({ video, location, setVideosCount }) => {
+const VideoItem: React.FC<Props> = ({ video, location }) => {
   const [videoStatus, setVideoStatus] = useState(video.status);
-  const [visible, setVisible] = useState(true);
+  const setVideos = useContext(setVideoContext);
 
-  useEffect(() => {
-    setVisible(true);
-    setVideoStatus(video.status);
-  }, [location, video]);
-
-  if (!visible) return null;
+  if (setVideos === null) return null;
 
   const handleVideo = (status: VideoState) => {
-    video.status = status;
     setVideoStatus(status);
-    const latest = localStorage.getItem("SAVED_VIDEO");
-    if (latest === null)
-      localStorage.setItem("SAVED_VIDEO", JSON.stringify([video]));
-    else {
-      localStorage.setItem(
-        "SAVED_VIDEO",
-        JSON.stringify([
-          ...JSON.parse(latest).filter(
-            (videoData: Processedvideo) => videoData.videoId !== video.videoId
-          ),
-          video,
-        ])
-      );
-      setVisible(false);
-      setVideosCount((prev) => prev - 1);
-    }
+    setVideos((prev) => [
+      ...prev.filter((prevVideo) => prevVideo.videoId !== video.videoId),
+      { ...video, status: status },
+    ]);
   };
 
   const saveVideo = () => {
-    video.status = "saved";
     setVideoStatus("saved");
-    const latest = localStorage.getItem("SAVED_VIDEO");
-    if (latest === null)
-      localStorage.setItem("SAVED_VIDEO", JSON.stringify([video]));
-    else {
-      localStorage.setItem(
-        "SAVED_VIDEO",
-        JSON.stringify([
-          ...JSON.parse(latest).filter(
-            (videoData: Processedvideo) => videoData.videoId !== video.videoId
-          ),
-          video,
-        ])
-      );
-    }
+    setVideos((prev) => [...prev, { ...video, status: "saved" }]);
   };
 
   const deleteVideo = () => {
-    const latest = localStorage.getItem("SAVED_VIDEO");
-    if (latest === null) localStorage.setItem("SAVED_VIDEO", "[]");
-    else {
-      localStorage.setItem(
-        "SAVED_VIDEO",
-        JSON.stringify([
-          ...JSON.parse(latest).filter(
-            (videoData: Processedvideo) => videoData.videoId !== video.videoId
-          ),
-        ])
-      );
-      setVisible(false);
-      setVideosCount((prev) => prev - 1);
-    }
+    setVideos((prev) => {
+      return prev.filter((prevVideo) => prevVideo.videoId !== video.videoId);
+    });
   };
 
   if (location === "onSearchMoadl")

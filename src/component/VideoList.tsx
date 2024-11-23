@@ -21,12 +21,7 @@ const VideoList: React.FC<Props> = ({ location, videos }) => {
   return (
     <div className="VideoList">
       {videos.map((video) => (
-        <VideoItem
-          key={video.videoId}
-          video={video}
-          location={location}
-          setVideosCount={setVideosCount}
-        />
+        <VideoItem key={video.videoId} video={video} location={location} />
       ))}
     </div>
   );
