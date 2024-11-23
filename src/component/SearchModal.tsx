@@ -21,7 +21,6 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   useEffect(() => {
     const fetchData = async (submitText: string) => {
       const fetchedData = await fetchQueryVideo(submitText);
-
       if (fetchedData !== null) {
         const formatDatas = formatVideoDatas(fetchedData);
         setVideos(formatDatas);
