@@ -1,5 +1,5 @@
 import "./Modal.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import RecentSubmitText from "./RecentSubmitText";
 import { fetchQueryVideo } from "../api/YoutubeAPI";
 import { Processedvideo } from "../type/Type";
@@ -19,38 +19,67 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   const [submitText, setSubmitText] = useState<string>("");
   const [videos, setVideos] = useState<Processedvideo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [nextageToken,setNextPageToken] = useState<string|undefined>(undefined)
-
+  const [nextPageToken, setNextPageToken] = useState<string | undefined>(
+    undefined
+  );
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchData = async (submitText: string,nextageToken?:string|undefined) => {
+    setVideos([]);
+    setNextPageToken(undefined);
+  }, [submitText]);
+
+  useEffect(() => {
+    const fetchData = async (
+      submitText: string,
+      nextageToken?: string | undefined
+    ) => {
       setIsLoading(true);
-      console.log(nextageToken)
-      const fetchedData = await fetchQueryVideo(submitText,nextageToken);
+      const fetchedData = await fetchQueryVideo(submitText, nextageToken);
       if (fetchedData !== null) {
         const formatDatas = processVideoDatas(fetchedData);
-        
-        if(nextageToken===undefined)
-          setVideos(formatDatas);
-        else 
-        setVideos((prev) => {
-          const allVideos = [...prev, ...formatDatas];
-          const uniqueVideos = Array.from(
-            new Map(allVideos.map(video => [video.videoId, video])).values()
-          );
-          return uniqueVideos;
-        });
+
+        if (nextageToken === undefined) setVideos(formatDatas);
+        else
+          setVideos((prev) => {
+            const allVideos = [...prev, ...formatDatas];
+            const uniqueVideos = Array.from(
+              new Map(allVideos.map((video) => [video.videoId, video])).values()
+            );
+            return uniqueVideos;
+          });
       } else setVideos([]);
       setIsLoading(false);
     };
     if (submitText !== "" && isModalOpen) {
-      fetchData(submitText,nextageToken);
+      fetchData(submitText, nextPageToken);
       //setVideos(fetchMok());
       setSearchText(submitText);
     }
-  }, [submitText, isModalOpen,nextageToken]);
+  }, [submitText, isModalOpen, nextPageToken]);
 
-  useEffect(()=>{console.log(nextageToken)},[nextageToken])
+  useEffect(() => {
+    if (videos.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          console.log(videos);
+          setNextPageToken(videos[videos.length - 1].nextageToken);
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [videos]);
 
   if (!isModalOpen) return null;
 
@@ -76,9 +105,13 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           >
             검색
           </button>
-          <button onClick={()=>{
-            console.log(videos.length)
-            setNextPageToken(videos[videos.length-1].nextageToken)}}>e다음페이지</button>
+          <button
+            onClick={() => {
+              console.log(videos.length);
+            }}
+          >
+            e다음페이지
+          </button>
         </div>
         <RecentSubmitText
           submitText={submitText}
@@ -90,6 +123,8 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           ) : (
             <VideoList videos={videos} location="onSearchMoadl" />
           )}
+          <div ref={observerRef} style={{ height: "10px" }} />
+          <button></button>
         </div>
       </div>
     </div>
