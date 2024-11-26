@@ -10,8 +10,10 @@ const options = {
 };
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export async function fetchQueryVideo(query: string) {
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=15&type=video&key=${API_KEY}`;
+export async function fetchQueryVideo(query: string, nextageToken? :string|undefined) {
+  console.log("token : "+nextageToken);
+  let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=15&type=video&key=${API_KEY}`;
+  if(nextageToken!==undefined)url+=`&pageToken=${nextageToken}`
   if (query === "") {
     throw new Error("검색어가 없어요");
   }
@@ -21,6 +23,7 @@ export async function fetchQueryVideo(query: string) {
       throw new Error(`HTTP 에러 status: ${response.status}`);
     }
     const data = await response.json();
+    
     return data;
   } catch (error) {
     console.error("Fetch 에러:", error);
