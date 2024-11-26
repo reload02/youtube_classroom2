@@ -9,6 +9,7 @@ const options = {
   },
 };
 const API_KEY = import.meta.env.VITE_API_KEY;
+
 export async function fetchQueryVideo(query: string) {
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&maxResults=15&type=video&key=${API_KEY}`;
   if (query === "") {

@@ -5,6 +5,7 @@ import { fetchQueryVideo } from "../api/YoutubeAPI";
 import { Processedvideo } from "../type/Type";
 import VideoList from "./VideoList";
 import { processVideoDatas } from "../api/YoutubeAPI";
+import "./LoadinfSppiner.css";
 
 //import { fetchMok } from "../api/YoutubeAPI";
 
@@ -17,14 +18,17 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [submitText, setSubmitText] = useState<string>("");
   const [videos, setVideos] = useState<Processedvideo[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async (submitText: string) => {
+      setIsLoading(true);
       const fetchedData = await fetchQueryVideo(submitText);
       if (fetchedData !== null) {
         const formatDatas = processVideoDatas(fetchedData);
         setVideos(formatDatas);
       } else setVideos([]);
+      setIsLoading(false);
     };
     if (submitText !== "" && isModalOpen) {
       fetchData(submitText);
@@ -63,7 +67,11 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           setSubmitText={setSubmitText}
         />
         <div>
-          <VideoList videos={videos} location="onSearchMoadl" />
+          {isLoading ? (
+            <section className="spinner" />
+          ) : (
+            <VideoList videos={videos} location="onSearchMoadl" />
+          )}
         </div>
       </div>
     </div>
