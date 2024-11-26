@@ -118,10 +118,13 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           setSubmitText={setSubmitText}
         />
         <div>
+          <VideoList videos={videos} location="onSearchMoadl" />
           {isLoading ? (
-            <section className="spinner" />
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <section className="spinner" />
+            </div>
           ) : (
-            <VideoList videos={videos} location="onSearchMoadl" />
+            <></>
           )}
           <div ref={observerRef} style={{ height: "10px" }} />
           <button></button>
