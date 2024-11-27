@@ -120,7 +120,13 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
         <div>
           <VideoList videos={videos} location="onSearchMoadl" />
           {isLoading ? (
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "60px",
+              }}
+            >
               <section className="spinner" />
             </div>
           ) : (
