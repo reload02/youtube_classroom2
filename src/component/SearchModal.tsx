@@ -105,13 +105,6 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
           >
             검색
           </button>
-          <button
-            onClick={() => {
-              console.log(videos.length);
-            }}
-          >
-            e다음페이지
-          </button>
         </div>
         <RecentSubmitText
           submitText={submitText}
@@ -133,7 +126,6 @@ const SearchModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
             <></>
           )}
           <div ref={observerRef} style={{ height: "10px" }} />
-          <button></button>
         </div>
       </div>
     </div>

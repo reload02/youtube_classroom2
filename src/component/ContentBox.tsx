@@ -13,6 +13,10 @@ import {
   getLocalStorageData,
   setLocalStorageData,
 } from "../api/localstorageAPI";
+import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
+import Profile from "./Profile";
+import OpenAI from "openai";
 
 export const setVideoContext = createContext<Dispatch<
   SetStateAction<Processedvideo[]>
@@ -25,6 +29,7 @@ const ContentBox: React.FC = () => {
   const [videos, setVideos] = useState<Processedvideo[]>([]);
 
   useEffect(() => {
+    gpt();
     if (getLocalStorageData("SAVED_VIDEO") !== "[]") {
       setVideos(JSON.parse(getLocalStorageData("SAVED_VIDEO")));
     }
@@ -34,10 +39,39 @@ const ContentBox: React.FC = () => {
     setLocalStorageData("SAVED_VIDEO", JSON.stringify(videos));
   }, [videos]);
 
+  const openai = new OpenAI({
+    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
+  const gpt = async () => {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You will be provided with statements, and your task is to convert them to standard English.",
+        },
+        {
+          role: "user",
+          content: "She no went to the market.",
+        },
+      ],
+      temperature: 1,
+      max_tokens: 256,
+      top_p: 1,
+    });
+
+    console.log(response.choices[0].message);
+  };
+
   return (
     <div className="contentBox">
       <setVideoContext.Provider value={setVideos}>
         <h1>나만의 유튜브 강의실</h1>
+        <LoginButton />
+        <LogoutButton />
+        <Profile />
         <div className="buttonWrapper">
           <div className="leftChild">
             <button
